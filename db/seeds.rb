@@ -10,6 +10,7 @@ require 'csv'
 #data = CSV.read("hospital_data.csv", { encoding: "UTF-8", headers: true, header_converters: :symbol, converters: :all})
 
 #hashed_data = data.map { |d| d.to_hash }
+
 Patient.destroy_all
 Hospital.destroy_all
 Review.destroy_all
@@ -22,6 +23,16 @@ Patient.create(first_name:Faker::Name.female_first_name, last_name:Faker::Name.l
 end
 puts "Done creating patient!"
 
-CSV.foreach("hospital_data.csv", { encoding: "UTF-8", headers: true, header_converters: :symbol, converters: :all}) do |row|
-  Hospital.create(row.to_hash)
+#all csv data
+#CSV.foreach("hospital_data.csv", {encoding: "UTF-8", headers: true, #header_converters: :symbol, converters: :all}) do |row|
+ # Hospital.create(row.to_hash)
+#end
+
+#select random data
+data = CSV.read("hospital_data.csv", {encoding: "UTF-8", headers: true, header_converters: :symbol, converters: :all})
+
+hashed_data = data.map { |d| d.to_hash }
+
+10.times do
+  Hospital.create(hashed_data.shuffle.first)
 end
