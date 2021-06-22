@@ -4,7 +4,7 @@ class CreateHospitals < ActiveRecord::Migration[6.0]
       t.string :name
       t.string :state
       t.string :city
-      t.string :type
+      t.string :hospital_type
     end
   end
 end

@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 2021_06_21_193724) do
     t.string "name"
     t.string "state"
     t.string "city"
-    t.string "type"
+    t.string "hospital_type"
   end
 
   create_table "patients", force: :cascade do |t|
