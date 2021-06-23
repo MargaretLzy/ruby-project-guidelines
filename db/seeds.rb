@@ -10,28 +10,31 @@ puts "Done initializing patients/hospitals/reviews information! Now uploading ne
 
 # PATIENT
 
+
 state_data = CSV.read("state_data.csv", {encoding: "UTF-8", header_converters: :symbol, converters: :all})
 city_data = CSV.read("city_data.csv", {encoding: "UTF-8", header_converters: :symbol, converters: :all})
 state = state_data.map { |d| d.to_a.shift }
 city = city_data.map{|d| d.to_a.shift}
+
 10.times do
 Patient.create(first_name:Faker::Name.male_first_name, last_name:Faker::Name.last_name, gender:"M", age: rand(1..100).to_f, state: state.sample, city: city.sample)
 end
+
 10.times do
 Patient.create(first_name:Faker::Name.female_first_name, last_name:Faker::Name.last_name, gender:"F", age: rand(1..100).to_f, state: state.sample, city: city.sample)
 
 end
-puts "Done creating patients!"
 
+puts "Done uploading patients information!"
 
 #all csv data
 #CSV.foreach("hospital_data.csv", {encoding: "UTF-8", headers: true, #header_converters: :symbol, converters: :all}) do |row|
  # Hospital.create(row.to_hash)
 #end
-
 #select random data
 
 # HOSPITAL
+
 data = CSV.read("hospital_data.csv", {encoding: "UTF-8", headers: true, header_converters: :symbol, converters: :all})
 
 hashed_data = data.map { |d| d.to_hash }
