@@ -45,6 +45,6 @@ puts "Done uploading the hospital information!"
 # REVIEW 
 puts "Uploading new reviews ..."
 500.times do
-  Review.create(patient_id: Patient.all.sample.id, hospital_id: Hospital.all.sample.id, rating: rand(0..5).to_f, comment:Faker::Quotes::Chiquito.sentence )
+  Review.create(patient_id: Patient.all.sample.id, hospital_id: Hospital.all.sample.id, rating: rand(0..10).to_f, comment:Faker::Quotes::Chiquito.sentence )
 end
 puts "Done uploading patients, hospitals and reviews!"
