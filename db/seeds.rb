@@ -43,5 +43,5 @@ end
 # REVIEW 
 puts "Done creating Hospitals!"
 30.times do
-  Review.create(patient_id: Patient.all.sample.id, hospital_id: Hospital.all.sample.id, rating: rand(0..5).to_f )
+  Review.create(patient_id: Patient.all.sample.id, hospital_id: Hospital.all.sample.id, rating: rand(0..5).to_f, comment:Faker::Quotes::Chiquito.sentence )
 end
