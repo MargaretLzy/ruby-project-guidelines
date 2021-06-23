@@ -36,7 +36,7 @@ data = CSV.read("hospital_data.csv", {encoding: "UTF-8", headers: true, header_c
 
 hashed_data = data.map { |d| d.to_hash }
 
-50.times do
+100.times do
   Hospital.create(hashed_data.sample)
 end
 puts "Done uploading the hospital information!"
