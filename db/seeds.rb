@@ -1,17 +1,6 @@
 require_relative '../config/environment.rb'
 require 'csv'
 
-#hospital_table = CSV.parse(File.read("hospital_data.csv"), headers: true)
-#hospital_name=hospital_table[0]
-#city_data= hospital_table[1]
-#state_data=hospital_table[2]
-#hospital_type=hospital_table[3]
-
-#data = CSV.read("hospital_data.csv", { encoding: "UTF-8", headers: true, header_converters: :symbol, converters: :all})
-
-#hashed_data = data.map { |d| d.to_hash }
-
-puts "Initializing patients information ..."
 Patient.destroy_all
 puts "Initializing hospitals information ..."
 Hospital.destroy_all
@@ -21,13 +10,19 @@ puts "Done initializing patients/hospitals/reviews information! Now uploading ne
 
 # PATIENT
 
+state_data = CSV.read("state_data.csv", {encoding: "UTF-8", header_converters: :symbol, converters: :all})
+city_data = CSV.read("city_data.csv", {encoding: "UTF-8", header_converters: :symbol, converters: :all})
+state = state_data.map { |d| d.to_a.shift }
+city = city_data.map{|d| d.to_a.shift}
 10.times do
-Patient.create(first_name:Faker::Name.male_first_name, last_name:Faker::Name.last_name, gender:"M", age: rand(1..100).to_f)
+Patient.create(first_name:Faker::Name.male_first_name, last_name:Faker::Name.last_name, gender:"M", age: rand(1..100).to_f, state: state.sample, city: city.sample)
 end
 10.times do
-Patient.create(first_name:Faker::Name.female_first_name, last_name:Faker::Name.last_name, gender:"F", age: rand(1..100).to_f)
+Patient.create(first_name:Faker::Name.female_first_name, last_name:Faker::Name.last_name, gender:"F", age: rand(1..100).to_f, state: state.sample, city: city.sample)
+
 end
-puts "Done creating patient!"
+puts "Done creating patients!"
+
 
 #all csv data
 #CSV.foreach("hospital_data.csv", {encoding: "UTF-8", headers: true, #header_converters: :symbol, converters: :all}) do |row|
@@ -46,3 +41,7 @@ hashed_data = data.map { |d| d.to_hash }
 end
 
 # REVIEW 
+puts "Done creating Hospitals!"
+30.times do
+  Review.create(patient_id: Patient.all.sample.id, hospital_id: Hospital.all.sample.id, rating: rand(0..5).to_f )
+end
