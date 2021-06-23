@@ -4,7 +4,7 @@ class Hospital < ActiveRecord::Base
 
     # average rating of a particular hospital 
     def reviews 
-        Review.all.select { |review| review.hospital_id == self.id }
+        reviews Review.all.select { |review| review.hospital_id == self.id }
     end
 
     def average_rating
@@ -27,7 +27,7 @@ class Hospital < ActiveRecord::Base
     end
 
 
-    # highest ratting as government hospital -> return hospital as object 
+    # highest rating as government hospital -> return hospital as object 
     def self.best_government_hospitals
         #binding.pry
         government_hospitals = self.all.select { |hospital| hospital.hospital_type == "Government" }
