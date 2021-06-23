@@ -11,9 +11,15 @@ require 'csv'
 
 #hashed_data = data.map { |d| d.to_hash }
 
+puts "Initializing patients information ..."
 Patient.destroy_all
+puts "Initializing hospitals information ..."
 Hospital.destroy_all
+puts "Initializing reviews information ..."
 Review.destroy_all
+puts "Done initializing patients/hospitals/reviews information! Now uploading new information"
+
+# PATIENT
 
 10.times do
 Patient.create(first_name:Faker::Name.male_first_name, last_name:Faker::Name.last_name, gender:"M", age: rand(1..100).to_f)
@@ -29,6 +35,8 @@ puts "Done creating patient!"
 #end
 
 #select random data
+
+# HOSPITAL
 data = CSV.read("hospital_data.csv", {encoding: "UTF-8", headers: true, header_converters: :symbol, converters: :all})
 
 hashed_data = data.map { |d| d.to_hash }
@@ -36,3 +44,5 @@ hashed_data = data.map { |d| d.to_hash }
 10.times do
   Hospital.create(hashed_data.sample)
 end
+
+# REVIEW 
