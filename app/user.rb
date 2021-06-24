@@ -33,6 +33,8 @@ last= STDIN.gets.chomp
         self.browse
         when "3"
           self.check
+          when "4"
+            self.update
     else
       puts "The number you enter is invalid, please try again."
     end
@@ -113,5 +115,62 @@ def self.check
 end
 
 end
+
+def self.update
+ print "What is the name of the hospital you'd like to update your rating: "
+    input = STDIN.gets.chomp
+    while input != 'return' do
+      if Hospital.find_by(name: input)==nil
+          print "Sorry you don't have rating for this hospital yet"
+        else 
+          print  
+            user_id=@@user.id
+  user_rev= Review.find_by(patient_id: user_id)
+   user_rating= user_rev.rating
+   user_comment=user_rev.comment
+   review_hos= user_rev.hospital_id
+   #try to get hospital name from hospital_id
+ #  get_hosp = review_hos.name
+  # hosp_name= get_hosp.name
+  rev= Review.find_by(patient_id: user_id, hospital_id: review_hos)
+  puts "For Hospital #{input}, you rated #{user_rating},and commented #{user_comment}".yellow
+  puts "What would you like to update"
+   
+    while true do
+    puts "1. Update rating"
+    puts "2. Update comment"
+    puts "n. Exit".red
+    print "Please choose an option "
+    input = STDIN.gets.chomp
+    
+    if input.downcase == 'exit' ||input =="n"
+      break
+    end
+    
+    case input.downcase
+    when "1"
+       print "Please enter the rating for this hospital(0-10): "
+        new_rating= STDIN.gets.chomp
+      rev.update(rating: new_rating)
+      puts "You updated your rating from  #{user_rating} to #{new_rating}".green
+      when "2"
+      print "Please enter the comment for this hospital: "
+        new_comment= STDIN.gets.chomp
+      rev.update(comment: new_comment)
+     puts "You updated your comment from #{user_comment} to #{new_comment}".yellow
+    else
+      puts "The key you enter is invalid, please try again."
+    end
 end
+
+end
+ 
+
+   puts "Here are the hospital you rated"
+        puts "What would you like to do next?"
+        break
+end
+end
+end
+
   # let the user to edit / delect their comments and ratings 
