@@ -19,7 +19,7 @@ class Hospital < ActiveRecord::Base
     ## return "We do not have hospital(s) registered in your city."
     ## return "Be the first one to review your hospital!"
     def self.city(your_city)  
-        self.all.select { |hospital| hospital.state == your_city }
+        self.all.select { |hospital| hospital.city == your_city }
     end
 
 
