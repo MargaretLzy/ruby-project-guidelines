@@ -82,20 +82,20 @@ end
 def self.check
   user_id=@@user.id
   user_review= Review.where(patient_id: user_id)
-  allrev= user_review.map{|rev|rev.rating}
-  allid=user_review.map{|rev|rev.hospital_id}
+  #allrev= user_review.map{|rev|rev.rating}
+  #allid=user_review.map{|rev|rev.hospital}
   
-  allcomment =user_review.map{|rev|rev.comment}
-  puts "For the hospital id#{allid}, you rated #{allrev},and commented #{allcomment}".yellow
+  #allcomment =user_review.map{|rev|rev.comment}
+  user_review.map { |review| puts "For #{review.hospital.name}, you rated #{review.rating},and commented #{review.comment}".yellow }
+  #puts "For the hospital id#{allid}, you rated #{allrev},and commented #{allcomment}".yellow
 
    puts "Here are the hospitals you rated"
-    hospitals = Hospital.all.select { |hospital| hospital.id == allid.each }
-    list_hospitals_reviewed = hospitals.map { |hospital| hospital.name }
+#    hospitals = Hospital.all.select { |hospital| hospital.id == allid.each }
+#    list_hospitals_reviewed = hospitals.map { |hospital| hospital.name }
      # let the user to edit / delect their comments and ratings 
     puts "Do you want to delete your reviews:"
     while true do
     puts "y. Delete all reviews"
-    puts "o. See the name of the hospital"
     puts "n. Exit".red
     print "Please choose the option "
     input = STDIN.gets.chomp
