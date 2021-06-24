@@ -1,22 +1,22 @@
 class User
-  attr_reader :first_name, :last_name
-  def initialize(first_name, last_name)
-    @first_name =first_name
-    @last_name =last_name
-    
-  end
-  def welcome
-    print "Hi "
-    print "#{@first_name.capitalize}".cyan
+ def self.welcome
+ print "Please let us know your first name: "
+first= STDIN.gets.chomp
+print "and your last name: "
+last= STDIN.gets.chomp
+
+@@user = Patient.find_or_create_by(first_name: first, last_name: last)
+  print "Hi "
+    print "#{first.capitalize}".cyan
     print "!"
     puts "What would you like to do today"
     puts "#{self.menu}"
   end
-  def menu
+  def self.menu
     while true do
     puts "1. Write comments/Rate a hospital"
     puts "2. Browse by State"
-    puts "3. Check rating for a hospital"
+    puts "3. Retrieve all my reviews"
     puts "5. Exit".red
     print "Please select a number, or type Exit. "
     input = STDIN.gets.chomp
@@ -38,7 +38,7 @@ class User
 end
 end
 # let the user to write comment(s)/ratings for hospital(s) that they went 
-  def write
+  def  self.write
     print "What is the name of the hospital you'd like to rate: "
     input = STDIN.gets.chomp
     while input != 'return' do
@@ -56,7 +56,7 @@ end
 end
 end
 # let the user to find hospital he or she wants 
-def browse
+def self.browse
   print "Which state do you live in: "
   state_input=  STDIN.gets.chomp
  allhos= Hospital.state(state_input)  
@@ -72,10 +72,50 @@ def browse
    review_data= Review.find_by(hospital_id: hos_id)
    hos_rating=get_id.average_rating
    hos_comment =review_data.comment
-   puts "#{hos1} is a #{hos_type} type hospital located in #{hos_city} with average rating of #{hos_rating} out of 10. Some comments include #{hos_comment}. "
+   puts "#{hos1} is a #{hos_type} type hospital located in #{hos_city} with average rating of #{hos_rating} out of 10. Some comments include #{hos_comment}. ".yellow
+  
 end
 
-def check
+def self.check
+  user_id=@@user.id
+  user_review= Review.where(patient_id: user_id)
+  allrev= user_review.map{|rev|rev.rating}
+  allid=user_review.map{|rev|rev.hospital_id}
+  puts allid,allrev
+  user_rev= Review.find_by(patient_id: user_id)
+   user_rating= user_rev.rating
+   user_comment=user_rev.comment
+   review_hos= user_rev.hospital_id
+   #try to get hospital name from hospital_id
+ #  get_hosp = review_hos.name
+  # hosp_name= get_hosp.name
+   puts "Here are the hospital you rated"
+   
+  puts "For Hospital id#{review_hos}, you rated #{user_rating},and commented #{user_comment}".yellow
+ 
+    while true do
+    puts "1. Delete all review"
+    puts "2. Delete one review"
+    puts "5. Exit".red
+    print "Please select a number, or type Exit. "
+    input = STDIN.gets.chomp
+    
+    if input.downcase == 'exit' ||input =="5"
+      break
+    end
+    
+    case input.downcase
+    when "1"
+      user_review.destroy_all
+      when "2"
+       user_rev.destroy
+        when "3"
+          
+    else
+      puts "The number you enter is invalid, please try again."
+    end
+end
+
 end
 end
   # let the user to edit / delect their comments and ratings 
