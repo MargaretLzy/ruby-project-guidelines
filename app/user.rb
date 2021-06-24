@@ -91,6 +91,7 @@ def self.check
    puts "Here are the hospitals you rated"
     hospitals = Hospital.all.select { |hospital| hospital.id == allid.each }
     list_hospitals_reviewed = hospitals.map { |hospital| hospital.name }
+     # let the user to edit / delect their comments and ratings 
     puts "Do you want to delete your reviews:"
     while true do
     puts "y. Delete all reviews"
@@ -101,7 +102,7 @@ def self.check
     
     if input.downcase == 'exit' ||input =="n"
       break
-    end
+    endÏ
     
     case input.downcase
     when "y"
@@ -164,15 +165,11 @@ def self.update
       puts "The key you enter is invalid, please try again."
     end
 end
-
 end
  
-
    puts "Here are the hospital you rated"
         puts "What would you like to do next?"
         break
 end
 end
 end
-
-  # let the user to edit / delect their comments and ratings 
