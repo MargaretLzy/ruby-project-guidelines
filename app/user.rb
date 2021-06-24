@@ -1,22 +1,22 @@
 class User
-  attr_reader :first_name, :last_name
-  def initialize(first_name, last_name)
-    @first_name =first_name
-    @last_name =last_name
-    
-  end
-  def welcome
-    print "Hi "
-    print "#{@first_name.capitalize}".cyan
+ def self.welcome
+ print "Please let us know your first name: "
+first= STDIN.gets.chomp
+print "and your last name: "
+last= STDIN.gets.chomp
+
+@@user = Patient.find_or_create_by(first_name: first, last_name: last)
+  print "Hi "
+    print "#{first.capitalize}".cyan
     print "!"
     puts "What would you like to do today"
     puts "#{self.menu}"
   end
-  def menu
+  def self.menu
     while true do
     puts "1. Write comments/Rate a hospital"
     puts "2. Browse by State"
-    puts "3. Check rating for a hospital"
+    puts "3. Retrieve all my reviews"
     puts "5. Exit".red
     print "Please select a number, or type Exit. "
     input = STDIN.gets.chomp
@@ -38,7 +38,7 @@ class User
 end
 end
 # let the user to write comment(s)/ratings for hospital(s) that they went 
-  def write
+  def  self.write
     print "What is the name of the hospital you'd like to rate: "
     input = STDIN.gets.chomp
     while input != 'return' do
@@ -56,7 +56,7 @@ end
 end
 end
 # let the user to find hospital he or she wants 
-def browse
+def self.browse
   print "Which state do you live in: "
   state_input=  STDIN.gets.chomp
  allhos= Hospital.state(state_input)  
@@ -75,7 +75,17 @@ def browse
    puts "#{hos1} is a #{hos_type} type hospital located in #{hos_city} with average rating of #{hos_rating} out of 10. Some comments include #{hos_comment}. "
 end
 
-def check
+def self.check
+  user_id=@@user.id
+  user_review= Review.find_by(patient_id: user_id)
+   user_rating= user_review.rating
+   user_comment=user_review.comment
+   review_hos= user_review.hospital_id
+   get_hosp = Hospital.find_by(hospital_id: review_hos)
+   hosp_name= get_hosp.name
+   puts "Here are the hospital you rated"
+   
+  puts "For #{hosp_name}, you rated #{user_rating},and commented #{user_comment}".yellow
 end
 end
   # let the user to edit / delect their comments and ratings 
