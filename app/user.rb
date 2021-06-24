@@ -50,7 +50,7 @@ end
        new_comment= STDIN.gets.chomp
        puts "You give a rating of #{new_rating} for #{input}"
        puts "We appreciate your review"
-        new_hospital= Hospital.find_or_create_by(name: input)
+       # new_hospital= Hospital.find_or_create_by(name: input)
         puts "What would you like to do next?"
         break
 end
@@ -76,18 +76,6 @@ def browse
 end
 
 def check
-    print "What is the name of the hospital you'd like to see the review: "
-    hos_name = STDIN.gets.chomp
-     if Hospital.find_by(name: hos_name) == nil
-          puts "Sorry, there's no review for this hospital yet.".red
-      else
-    get_id= Hospital.find_by(name: hos_name)
-    hos_id = get_id.id
-    review_data= Review.find_by(hospital_id: hos_id)
-    hos_rating=get_id.average_rating
-   hos_comment =review_data.comment
-   puts "#{hos_name} has an average rating of #{hos_rating}. Some comments include #{hos_comment}. "
-end
 end
 end
   # let the user to edit / delect their comments and ratings 

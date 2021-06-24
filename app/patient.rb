@@ -2,18 +2,38 @@ class Patient < ActiveRecord::Base
     has_many :reviews
     has_many :hospitals, through: :reviews 
 
-    # the oldest patient
-    ## perhaps need 20 olderst people on the list 
-    def self.oldest_patient 
-        self.all.max_by { |patient| patient.age } 
+    # 10 oldest patient
+    def self.oldest 
+        sorted_patients = self.all.sort_by { |patient| patient.age }.reverse
+        sorted_patients[0, 9]
     end
 
-    # the patient with the most reviews 
+    # 10 patient with the most reviews
+    ## Hw many reviews each person wrote??? 
+    def self.most_reviews
+        sorted_patients = self.all.sort_by { |patient| patient.reviews.length }.reverse
+        sorted_patients[0, 9]
+    end
 
-    # the Patient age between 18 and 60 
+    # Number of patients age between 18 and 60 
+    def self.age_range
+        top_limit = self.where("age <= 60")
+        bottom_limit = top_limit.where("age >=18")
+        bottom_limit.length
+    end
 
-    # the oldest male patient
+    # Top 10 oldest male patient
+    def self.male_oldest
+        male_patients = self.select { |patient| patient.gender == "M" }
+        sorted_males = male_patients.sort_by { |patient| patient.age }.reverse
+        sorted_males[0, 9] 
+    end
 
-    # the oldest female patient
+    # Top 10 oldest female patient
+    def self.female_oldest
+        female_patients = self.select { |patient| patient.gender == "F" }
+        sorted_females = female_patients.sort_by { |patient| patient.age }.reverse
+        sorted_females[0, 9] 
+    end
 
 end
