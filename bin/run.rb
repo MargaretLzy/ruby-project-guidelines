@@ -1,12 +1,10 @@
 require_relative '../config/environment'
-require ‘pry’ 
-
+require_relative '../app/user.rb'
+require 'colorize'
 # welcome user 
-
+puts "Welcome to Rate Your Hospital!".blue
 # let the user input their personal information 
+puts "We're glad to help you today"
 
-# let the user to write comment(s)/ratings for hospital(s) that they went 
+User.welcome
 
-# let the user to edit / delect their comments and ratings 
-
-# let the user to find hospital he or she wants 

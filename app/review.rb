@@ -18,5 +18,11 @@ class Review < ActiveRecord::Base
     def self.longest_comment
         self.all.max_by { |review| review.comment.split.count } 
     end
+
+    def self.id_to_name(hospital_id)
+        # review_interst = self.all.select { |review| review.hospital_id == hospital_id } 
+        hospitals = Hospital.all.select { |hospital| hospital.id == hospital_id }
+        hospitals.map { |hospital| hospital.name }
+    end
     
 end
