@@ -2,10 +2,6 @@ class Hospital < ActiveRecord::Base
     has_many :reviews 
     has_many :patients, through: :reviews 
 
-    # average rating of a particular hospital 
-    def reviews 
-        reviews Review.all.select { |review| review.hospital_id == self.id }
-    end
 
     def average_rating
         ratings = reviews.map { |review| review.rating }
