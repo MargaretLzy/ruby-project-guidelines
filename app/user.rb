@@ -102,7 +102,7 @@ def self.check
     
     if input.downcase == 'exit' ||input =="n"
       break
-    endÏ
+    end
     
     case input.downcase
     when "y"
@@ -165,8 +165,10 @@ def self.update
       puts "The key you enter is invalid, please try again."
     end
 end
+
 end
  
+
    puts "Here are the hospital you rated"
         puts "What would you like to do next?"
         break
