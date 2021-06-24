@@ -24,5 +24,9 @@ class Review < ActiveRecord::Base
         hospitals = Hospital.all.select { |hospital| hospital.id == hospital_id }
         hospitals.map { |hospital| hospital.name }
     end
-    
+    def self.pid_to_name(patient_id)
+        # review_interst = self.all.select { |review| review.hospital_id == hospital_id }
+        patients = Patient.all.select { |patient| patient.id == patient_id }
+        patients.map { |patient| patient.first_name }
+    end
 end

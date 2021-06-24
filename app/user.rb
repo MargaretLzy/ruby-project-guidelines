@@ -9,16 +9,17 @@ last= STDIN.gets.chomp
   print "Hi "
     print "#{first.capitalize}".cyan
     print "!"
-    puts "What would you like to do today"
+    puts " What would you like to do today"
     puts "#{self.menu}"
   end
   def self.menu
     while true do
-    puts "1. Write comments/Rate a hospital"
+    puts "1. Write Comments/Rate a Hospital"
     puts "2. Browse by State"
-    puts "3. Retrieve all my reviews"
+    puts "3. Retrieve All My Reviews"
+    puts "4. Modify Comment/Rate for a Hospital"
     puts "5. Exit".red
-    print "Please select a number, or type Exit. "
+    print "Please Select a Number, or Type exit. "
     input = STDIN.gets.chomp
     
     if input.downcase == 'exit' ||input =="5"
@@ -32,8 +33,10 @@ last= STDIN.gets.chomp
         self.browse
         when "3"
           self.check
+          when "4"
+            self.update
     else
-      puts "The number you enter is invalid, please try again."
+      puts "The number you entered is invalid. Please try again."
     end
 end
 end
@@ -49,7 +52,7 @@ end
        print "Would like to add a comment: "
        new_comment= STDIN.gets.chomp
        puts "You give a rating of #{new_rating} for #{input}"
-       puts "We appreciate your review"
+       puts "We appreciate your review!"
        # new_hospital= Hospital.find_or_create_by(name: input)
         puts "What would you like to do next?"
         break
@@ -62,8 +65,8 @@ def self.browse
  allhos= Hospital.state(state_input)  
  hos_name= allhos.map{|hos|hos.name}
   puts hos_name
-  puts "Listed above are the Hospital in your state".magenta
-  print "Which Hospital are you interested in: "
+  puts "Listed above are the hospital in your state".magenta
+  print "Which hospital are you interested in: "
   hos1= STDIN.gets.chomp
   get_id= Hospital.find_by(name: hos1)
    hos_type= get_id.hospital_type
@@ -81,7 +84,50 @@ def self.check
   user_review= Review.where(patient_id: user_id)
   allrev= user_review.map{|rev|rev.rating}
   allid=user_review.map{|rev|rev.hospital_id}
-  puts allid,allrev
+  
+  allcomment =user_review.map{|rev|rev.comment}
+  puts "For the hospital id#{allid}, you rated #{allrev},and commented #{allcomment}".yellow
+
+   puts "Here are the hospitals you rated"
+    hospitals = Hospital.all.select { |hospital| hospital.id == allid.each }
+    list_hospitals_reviewed = hospitals.map { |hospital| hospital.name }
+      puts "#{list_hospitals_reviewed}"
+    puts "Do you want to delete your reviews:"
+    while true do
+    puts "y. Delete all reviews"
+    puts "o. See the name of the hospital"
+    puts "n. Exit".red
+    print "Please choose the option "
+    input = STDIN.gets.chomp
+    
+    if input.downcase == 'exit' ||input =="n"
+      break
+    end
+    
+    case input.downcase
+    when "y"
+      user_review.destroy_all
+      when "o"
+       print "Please enter the hospital ID: "
+       idnum= STDIN.gets.chomp
+       name= Review.id_to_name(idnum)
+      puts "You rated for #{name}."
+    else
+      puts "The key you enter is invalid, please try again."
+    end
+end
+
+end
+
+def self.update
+ print "What is the name of the hospital you'd like to update your rating: "
+    input = STDIN.gets.chomp
+    while input != 'return' do
+      if Hospital.find_by(name: input)==nil
+          print "Sorry you don't have rating for this hospital yet"
+        else 
+          print  
+            user_id=@@user.id
   user_rev= Review.find_by(patient_id: user_id)
    user_rating= user_rev.rating
    user_comment=user_rev.comment
@@ -89,33 +135,45 @@ def self.check
    #try to get hospital name from hospital_id
  #  get_hosp = review_hos.name
   # hosp_name= get_hosp.name
-   puts "Here are the hospital you rated"
+  rev= Review.find_by(patient_id: user_id, hospital_id: review_hos)
+  puts "For Hospital #{input}, you rated #{user_rating},and commented #{user_comment}".yellow
+  puts "What would you like to update"
    
-  puts "For Hospital id#{review_hos}, you rated #{user_rating},and commented #{user_comment}".yellow
- 
     while true do
-    puts "1. Delete all review"
-    puts "2. Delete one review"
-    puts "5. Exit".red
-    print "Please select a number, or type Exit. "
+    puts "1. Update rating"
+    puts "2. Update comment"
+    puts "n. Exit".red
+    print "Please choose an option "
     input = STDIN.gets.chomp
     
-    if input.downcase == 'exit' ||input =="5"
+    if input.downcase == 'exit' ||input =="n"
       break
     end
     
     case input.downcase
     when "1"
-      user_review.destroy_all
+       print "Please enter the rating for this hospital(0-10): "
+        new_rating= STDIN.gets.chomp
+      rev.update(rating: new_rating)
+      puts "You updated your rating from  #{user_rating} to #{new_rating}".green
       when "2"
-       user_rev.destroy
-        when "3"
-          
+      print "Please enter the comment for this hospital: "
+        new_comment= STDIN.gets.chomp
+      rev.update(comment: new_comment)
+     puts "You updated your comment from #{user_comment} to #{new_comment}".yellow
     else
-      puts "The number you enter is invalid, please try again."
+      puts "The key you enter is invalid, please try again."
     end
 end
 
 end
+ 
+
+   puts "Here are the hospital you rated"
+        puts "What would you like to do next?"
+        break
 end
+end
+end
+
   # let the user to edit / delect their comments and ratings 
