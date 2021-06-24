@@ -81,11 +81,13 @@ def self.check
    user_rating= user_review.rating
    user_comment=user_review.comment
    review_hos= user_review.hospital_id
-   get_hosp = Hospital.find_by(hospital_id: review_hos)
-   hosp_name= get_hosp.name
+   #try to get hospital name from hospital_id
+ #  get_hosp = review_hos.name
+  # hosp_name= get_hosp.name
    puts "Here are the hospital you rated"
    
-  puts "For #{hosp_name}, you rated #{user_rating},and commented #{user_comment}".yellow
+  puts "For Hospital id#{review_hos}, you rated #{user_rating},and commented #{user_comment}".yellow
+  
 end
 end
   # let the user to edit / delect their comments and ratings 
