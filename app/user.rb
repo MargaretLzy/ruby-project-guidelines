@@ -91,7 +91,6 @@ def self.check
    puts "Here are the hospitals you rated"
     hospitals = Hospital.all.select { |hospital| hospital.id == allid.each }
     list_hospitals_reviewed = hospitals.map { |hospital| hospital.name }
-      puts "#{list_hospitals_reviewed}"
     puts "Do you want to delete your reviews:"
     while true do
     puts "y. Delete all reviews"
@@ -109,9 +108,9 @@ def self.check
       user_review.destroy_all
       when "o"
        print "Please enter the hospital ID: "
-       idnum= STDIN.gets.chomp
+       idnum= STDIN.gets.chomp.to_f
        name= Review.id_to_name(idnum)
-      puts "You rated for #{name}."
+      puts "You rated for #{name}.".green
     else
       puts "The key you enter is invalid, please try again."
     end
