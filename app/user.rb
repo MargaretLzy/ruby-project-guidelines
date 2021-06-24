@@ -17,6 +17,7 @@ last= STDIN.gets.chomp
     puts "1. Write comments/Rate a hospital"
     puts "2. Browse by State"
     puts "3. Retrieve all my reviews"
+    puts "4. Modify comment/rate for a hospital"
     puts "5. Exit".red
     print "Please select a number, or type Exit. "
     input = STDIN.gets.chomp
@@ -81,38 +82,33 @@ def self.check
   user_review= Review.where(patient_id: user_id)
   allrev= user_review.map{|rev|rev.rating}
   allid=user_review.map{|rev|rev.hospital_id}
-  puts allid,allrev
-  user_rev= Review.find_by(patient_id: user_id)
-   user_rating= user_rev.rating
-   user_comment=user_rev.comment
-   review_hos= user_rev.hospital_id
-   #try to get hospital name from hospital_id
- #  get_hosp = review_hos.name
-  # hosp_name= get_hosp.name
+  
+  allcomment =user_review.map{|rev|rev.comment}
+  puts "For Hospital id#{allid}, you rated #{allrev},and commented #{allcomment}".yellow
+
    puts "Here are the hospital you rated"
-   
-  puts "For Hospital id#{review_hos}, you rated #{user_rating},and commented #{user_comment}".yellow
- 
+    puts "Do you want to delete your reviews:"
     while true do
-    puts "1. Delete all review"
-    puts "2. Delete one review"
-    puts "5. Exit".red
-    print "Please select a number, or type Exit. "
+    puts "y. Delete all review"
+    puts "o. See the name of the hospital"
+    puts "n. Exit".red
+    print "Please choose an option "
     input = STDIN.gets.chomp
     
-    if input.downcase == 'exit' ||input =="5"
+    if input.downcase == 'exit' ||input =="n"
       break
     end
     
     case input.downcase
-    when "1"
+    when "y"
       user_review.destroy_all
-      when "2"
-       user_rev.destroy
-        when "3"
-          
+      when "o"
+       print "Please enter the hospital ID: "
+       idnum= STDIN.gets.chomp
+       name= Review.id_to_name(idnum)
+      puts "You rated for #{name}."
     else
-      puts "The number you enter is invalid, please try again."
+      puts "The key you enter is invalid, please try again."
     end
 end
 
