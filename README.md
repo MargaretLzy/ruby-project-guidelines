@@ -10,7 +10,7 @@ I want to be able to:
 -View the reviews of a particular hospital that the patient is interested in. (rating, comment) (READ)
 -Delete his rating, comment, or even own account. (DELETE)
 
-#Install Instructions
+# Install Instructions
 1. Fork and clone this repository.
 2. `cd` into the cloned folder and run in terminal
 3. type `run bundle install`
