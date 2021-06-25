@@ -42,18 +42,19 @@ end
 end
 # let the user to write comment(s)/ratings for hospital(s) that they went 
   def  self.write
+     user_id=@@user.id
     print "What is the name of the hospital you'd like to rate: "
     input = STDIN.gets.chomp
     while input != 'return' do
-    
-          print "Please enter the rating for this hospital(0-10): "
+      hos =Hospital.find_or_create_by(name: input)
+        print "Please enter the rating for this hospital(0-10): "
         new_rating= STDIN.gets.chomp
-       # Review.create(hospital_id: hos.id, rating: new_rating)
+    
        print "Would like to add a comment: "
        new_comment= STDIN.gets.chomp
-       puts "You give a rating of #{new_rating} for #{input}"
+       puts "You give a rating of #{new_rating} for #{input}".green
        puts "We appreciate your review!"
-       # new_hospital= Hospital.find_or_create_by(name: input)
+       Review.create(patient_id: user_id, hospital_id: hos.id, rating: new_rating, comment: new_comment)
         puts "What would you like to do next?"
         break
 end
@@ -90,8 +91,6 @@ def self.check
   #puts "For the hospital id#{allid}, you rated #{allrev},and commented #{allcomment}".yellow
 
    puts "Here are the hospitals you rated"
-#    hospitals = Hospital.all.select { |hospital| hospital.id == allid.each }
-#    list_hospitals_reviewed = hospitals.map { |hospital| hospital.name }
      # let the user to edit / delect their comments and ratings 
     puts "Do you want to delete your reviews:"
     while true do
@@ -107,11 +106,8 @@ def self.check
     case input.downcase
     when "y"
       user_review.destroy_all
-      when "o"
-       print "Please enter the hospital ID: "
-       idnum= STDIN.gets.chomp.to_f
-       name= Review.id_to_name(idnum)
-      puts "You rated for #{name}.".green
+      puts "All reviews deleted".magenta
+      break
     else
       puts "The key you enter is invalid, please try again."
     end
@@ -126,9 +122,10 @@ def self.update
       if Hospital.find_by(name: input)==nil
           print "Sorry you don't have rating for this hospital yet"
         else 
+          hospital =Hospital.find_by(name: input)
           print  
             user_id=@@user.id
-  user_rev= Review.find_by(patient_id: user_id)
+  user_rev= Review.find_by(patient_id: user_id, hospital_id: hospital.id)
    user_rating= user_rev.rating
    user_comment=user_rev.comment
    review_hos= user_rev.hospital_id
